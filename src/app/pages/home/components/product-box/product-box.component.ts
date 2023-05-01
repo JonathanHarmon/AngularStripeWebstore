@@ -14,5 +14,8 @@ export class ProductBoxComponent implements OnInit {
     
   }
 
+  onAddToCart(): void {
+    
+  }
 
 }
