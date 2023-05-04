@@ -1,39 +1,68 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { loadStripe } from '@stripe/stripe-js';
-import { Cart, CartItem } from 'src/app/models/cart.model';
-import { CartService } from 'src/app/services/cart.service';
+// import { HttpClient } from '@angular/common/http';
+// import { Component, OnInit } from '@angular/core';
+// import { loadStripe } from '@stripe/stripe-js';
+// import { Cart, CartItem } from 'src/app/models/cart.model';
+// import { CartService } from 'src/app/services/cart.service';
 
-@Component({
-  selector: 'app-cart',
-  templateUrl: './cart.component.html'
-})
-export class CartComponent implements OnInit{
-  cart: Cart = { items: [{
-    product: 'https://via.placeholder.com/150',
-    name: 'snickers',
-    price: 150,
-    quantity: 1,
-    id: 1, 
-  },
-  {
-    product: 'https://via.placeholder.com/150',
-    name: 'snickers',
-    price: 150,
-    quantity: 3,
-    id: 2, 
-  }
-]};
+// @Component({
+//   selector: 'app-cart',
+//   templateUrl: './cart.component.html'
+// })
+// export class CartComponent implements OnInit{
+//   cart: Cart = { items: [{
+//     product: 'https://via.placeholder.com/150',
+//     name: 'snickers',
+//     price: 150,
+//     quantity: 1,
+//     id: 1, 
+//   },
+//   {
+//     product: 'https://via.placeholder.com/150',
+//     name: 'snickers',
+//     price: 150,
+//     quantity: 3,
+//     id: 2, 
+//   }
+// ]};
 
-  dataSource: Array<CartItem> = [];
-  displayedColumns: Array<string> = [
-    'product',
-    'name',
-    'price',
-    'quantity',
-    'total',
-    'action'
-  ]
+//   dataSource: Array<CartItem> = [];
+//   displayedColumns: Array<string> = [
+//     'product',
+//     'name',
+//     'price',
+//     'quantity',
+//     'total',
+//     'action'
+//   ]
+
+
+
+
+  import { HttpClient } from '@angular/common/http';
+  import { Component, OnDestroy, OnInit } from '@angular/core';
+  import { Cart, CartItem } from 'src/app/models/cart.model';
+  import { CartService } from 'src/app/services/cart.service';
+  import { loadStripe } from '@stripe/stripe-js';
+  import { Subscription } from 'rxjs';
+  
+  @Component({
+    selector: 'app-cart',
+    templateUrl: './cart.component.html',
+  })
+  export class CartComponent implements OnInit, OnDestroy {
+    cart: Cart = { items: [] };
+    displayedColumns: string[] = [
+      'product',
+      'name',
+      'price',
+      'quantity',
+      'total',
+      'action',
+    ];
+    dataSource: CartItem[] = [];
+    cartSubscription: Subscription | undefined;
+
+
 
   constructor(private cartService: CartService, private http: HttpClient) { }
   
@@ -74,6 +103,12 @@ export class CartComponent implements OnInit{
         sessionId: res.id
       })
     });
+  }
+
+  ngOnDestroy() {
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
+    }
   }
 
 }
