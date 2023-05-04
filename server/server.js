@@ -8,7 +8,7 @@ app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
 app.use(cors({ origin: true, credentials: true }));
 
-const stripe = require("stripe")("SECRET_KEY_HERE");
+const stripe = require("stripe")("sk_test_51N3fgODs93hvqyjXVStiM4TOPsuuBrRMCa0HPon4juybaZ4bsUS3EWTiKY8PrRNduF4u5LFTD5xrCiUvXahddBeL00ADR2BD2F");
 
 app.post("/checkout", async (req, res, next) => {
     try {
@@ -70,8 +70,8 @@ app.post("/checkout", async (req, res, next) => {
                 quantity: item.quantity,
               })),
                mode: "payment",
-               success_url: "http://localhost:4242/success.html",
-               cancel_url: "http://localhost:4242/cancel.html",
+               success_url: "https://webstoredemo-93e49.web.app/success.html",
+               cancel_url: "https://webstoredemo-93e49.web.app/cancel.html",
             });
 
         res.status(200).json(session);
